@@ -56,7 +56,8 @@ class ShareActivity : AppCompatActivity() {
         window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
 
         // process the link
-        BabeClient().setCallback(object : BabeClient.OnCallback {
+        BabeClient(this)
+            .setCallback(object : BabeClient.OnCallback {
                 override fun onStart() {
                     setProgress(true)
                 }

@@ -1,5 +1,6 @@
 package net.harimurti.babesharer
 
+import android.content.Context
 import android.os.Build
 import android.text.Html
 import android.util.Log
@@ -7,7 +8,7 @@ import androidx.core.text.HtmlCompat
 import okhttp3.*
 import java.io.IOException
 
-class BabeClient {
+class BabeClient(private val context: Context) {
     interface OnCallback {
         fun onStart()
         fun onClientError(e: IOException)
@@ -132,7 +133,7 @@ class BabeClient {
                         if (match != null) {
                             // html decode special char
                             val title = decodeHtml(match.groups[1]?.value.toString())
-                            val link = decodeHtml(match.groups[2]?.value.toString())
+                            val link = linkNormalizer(match.groups[2]?.value.toString())
 
                             listener?.onSetArticle(link, title)
                             listener?.onFinish(false)
@@ -154,5 +155,16 @@ class BabeClient {
             @Suppress("deprecation")
             Html.fromHtml(text).toString()
         }
+    }
+
+    private fun linkNormalizer(text: String): String {
+        var link = Regex("(\\?.+)").replace(decodeHtml(text), "")
+        for (value in context.resources.getStringArray(R.array.pageall)) {
+            val match = Regex("(.+)\\|(.+)").find(value) ?: continue
+            if (link.contains(match.groups[1]?.value.toString())) {
+                link += match.groups[2]?.value.toString()
+            }
+        }
+        return link
     }
 }

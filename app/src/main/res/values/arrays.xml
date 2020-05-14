@@ -9,4 +9,10 @@
         <item>market://dev?id=5298464247075751253</item>
         <item>https://play.google.com/store/apps/dev?id=5298464247075751253</item>
     </array>
+    <array name="pageall">
+        <item>tribunnews.com|?page=all</item>
+        <item>grid.id|?page=all</item>
+        <item>kompas.com|?page=all</item>
+        <item>wartaekonomi.co.id|/0</item>
+    </array>
 </resources>
