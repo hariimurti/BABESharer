@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<TextView>(R.id.txt_installed).text = installed
         findViewById<TextView>(R.id.txt_share_flow).text =
-            String.format(getString(R.string.babe_this_app_target), installed)
+            String.format(getString(R.string.babe_this_app_target), installed, getString(R.string.app_name))
     }
 
     fun onRadioClick(view: View) {

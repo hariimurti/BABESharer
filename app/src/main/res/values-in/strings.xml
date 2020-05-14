@@ -19,6 +19,6 @@
     <string name="select_mode">Pilih Mode</string>
     <string name="share_flow">Alur Bagikan</string>
     <string name="installed">Terpasang</string>
-    <string name="babe_this_app_target">%s » Aplikasi ini » Target</string>
-    <string name="information">Informaasi</string>
+    <string name="babe_this_app_target">%s » %s » Target</string>
+    <string name="information">Informasi</string>
 </resources>
