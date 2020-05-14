@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="packages">
+        <item>id.co.babe</item>
+        <item>com.ss.android.article.master.id</item>
+        <item>technology.mainspring.babenews</item>
+    </array>
+    <array name="market">
+        <item>market://dev?id=5298464247075751253</item>
+        <item>https://play.google.com/store/apps/dev?id=5298464247075751253</item>
+    </array>
+</resources>
