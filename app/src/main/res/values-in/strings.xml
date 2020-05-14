@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_share">Bagikan Artikel dari BABE</string>
-    <string name="title_share">Bagikan</string>
-    <string name="title_share_article">Bagikan Artikel</string>
+    <string name="title_share">Bagikan Artikel</string>
     <string name="label_article">Artikel :</string>
     <string name="label_link">Tautan :</string>
     <string name="toast_request_failure">Permintaan Gagal</string>

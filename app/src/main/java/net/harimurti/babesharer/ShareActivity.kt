@@ -147,8 +147,11 @@ class ShareActivity : AppCompatActivity() {
         }
 
         val shareIntent = Intent.createChooser(sendIntent, getString(R.string.title_share))
-        runOnUiThread { startActivity(shareIntent) }
+        runOnUiThread { startActivityForResult(shareIntent, 0) }
+    }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         this.finish()
     }
 }
