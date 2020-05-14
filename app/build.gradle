@@ -12,13 +12,13 @@ android {
         versionProps.load(new FileInputStream(versionPropsFile))
     }
     def _versionCode = (versionProps['VERSION_CODE'] ?: "1").toInteger()
-    for (String task : gradle.startParameter.getTaskNames()) {
-        if (task.contains("assembleDebug") || task.contains("assembleRelease")) {
-            _versionCode = _versionCode + 1
+    gradle.taskGraph.whenReady { taskGraph ->
+        if (taskGraph.hasTask(assembleDebug)) {
+            _versionCode += 1
+            versionProps['VERSION_CODE'] = _versionCode.toString()
+            versionProps.store(versionPropsFile.newWriter(), null)
         }
     }
-    versionProps['VERSION_CODE'] = _versionCode.toString()
-    versionProps.store(versionPropsFile.newWriter(), null)
 
     defaultConfig {
         applicationId "net.harimurti.babesharer"
