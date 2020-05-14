@@ -10,8 +10,8 @@
     <string name="toast_article_is_empty">Artikel kosong!</string>
     <string name="button_install">PlayStore</string>
     <string name="button_exit">Keluar</string>
-    <string name="without_ui">Tanpa Tampilan</string>
-    <string name="with_ui">Dengan Tampilan</string>
+    <string name="without_ui">Sederhana</string>
+    <string name="with_ui">Komplit</string>
     <string name="sample_article">Contoh judul artikel yang akan di share.</string>
     <string name="please_wait">Tunggu Sebentar</string>
     <string name="select_mode">Pilih Mode</string>

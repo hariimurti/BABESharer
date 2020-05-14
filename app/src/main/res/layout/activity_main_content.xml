@@ -183,18 +183,17 @@
                 android:tag="@string/with_ui"
                 android:text="@string/with_ui"
                 app:layout_constraintEnd_toStartOf="@+id/center_separator"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/include_with"
                 app:layout_constraintTop_toBottomOf="@+id/include_with" />
 
             <RadioButton
                 android:id="@+id/rb_without"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:onClick="onRadioClick"
                 android:tag="@string/without_ui"
                 android:text="@string/without_ui"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/include_without"
                 app:layout_constraintStart_toEndOf="@+id/center_separator"
                 app:layout_constraintTop_toBottomOf="@+id/include_without" />
 
