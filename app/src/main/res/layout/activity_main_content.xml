@@ -53,9 +53,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
+                    android:text="@string/strip"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tv5"
-                    app:layout_constraintTop_toTopOf="@id/tv" />
+                    app:layout_constraintStart_toEndOf="@+id/label_colon_installed"
+                    app:layout_constraintTop_toTopOf="@id/label_installed" />
 
                 <TextView
                     android:id="@+id/txt_share_flow"
@@ -64,44 +65,44 @@
                     android:layout_marginStart="5dp"
                     android:text="@string/babe_this_app_target"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/tv6"
-                    app:layout_constraintTop_toTopOf="@+id/tv3" />
+                    app:layout_constraintStart_toEndOf="@id/label_colon_share"
+                    app:layout_constraintTop_toTopOf="@+id/label_share_flow" />
 
                 <TextView
-                    android:id="@+id/tv3"
+                    android:id="@+id/label_share_flow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="@string/share_flow"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv" />
+                    app:layout_constraintTop_toBottomOf="@+id/label_installed" />
 
                 <TextView
-                    android:id="@+id/tv"
+                    android:id="@+id/label_installed"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/installed"
-                    app:layout_constraintEnd_toEndOf="@+id/tv3"
+                    app:layout_constraintEnd_toEndOf="@+id/label_share_flow"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/tv5"
+                    android:id="@+id/label_colon_installed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:text="@string/colon"
-                    app:layout_constraintStart_toEndOf="@+id/tv"
-                    app:layout_constraintTop_toTopOf="@+id/tv" />
+                    app:layout_constraintStart_toEndOf="@+id/label_installed"
+                    app:layout_constraintTop_toTopOf="@+id/label_installed" />
 
                 <TextView
-                    android:id="@+id/tv6"
+                    android:id="@+id/label_colon_share"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:text="@string/colon"
-                    app:layout_constraintStart_toEndOf="@+id/tv3"
-                    app:layout_constraintTop_toTopOf="@+id/tv3" />
+                    app:layout_constraintStart_toEndOf="@+id/label_share_flow"
+                    app:layout_constraintTop_toTopOf="@+id/label_share_flow" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
