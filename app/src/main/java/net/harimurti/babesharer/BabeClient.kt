@@ -5,8 +5,11 @@ import android.os.Build
 import android.text.Html
 import android.util.Log
 import androidx.core.text.HtmlCompat
+import kotlinx.serialization.UnstableDefault
 import okhttp3.*
 import java.io.IOException
+import kotlinx.serialization.json.*
+import net.harimurti.babesharer.json.Babe
 
 class BabeClient(private val context: Context) {
     interface OnCallback {
@@ -41,6 +44,7 @@ class BabeClient(private val context: Context) {
             "ttreq=1\$25fa2921db20dcf6ad36cda3586de6ad47ffc9d3; " +
             "passport_csrf_token=b7074271dea7adc9dc61f70d3b4f2fca"
 
+    @UnstableDefault
     fun getArticle(url: String) {
         val request = Request.Builder()
             .url(url)
@@ -57,30 +61,35 @@ class BabeClient(private val context: Context) {
             override fun onResponse(call: Call, response: Response) {
                 response.use {
                     if (response.isSuccessful) {
-                        // get current url & website content
-                        val currentUrl = response.networkResponse?.request?.url.toString()
+                        // website content
                         val content = response.body?.string().toString()
                             .replace("\\\"", "\"")
+                            .replace("\\\\\"", "\\\"")
 
                         // save to cache : babe.html
-                        // Content.toFile(applicationContext, "babe.html", content)
+                        if (BuildConfig.DEBUG) {
+                            Content.toFile(context, "babe.html", content)
+                        }
 
-                        // regex1 : find groupId, articleId, title
-                        var match = Regex("\"groupId\":\"(\\d+)\",\"articleId\":\"(\\d+)\",\"title\":\"(.+?)\"").find(content)
+                        // regex json
+                        var match = Regex("INITIAL_STATE.+JSON\\.parse\\(\"(.+?)\"\\);").find(content)
                         if (match != null) {
-                            listener?.onSetArticle(url, match.groups[3]?.value.toString())
-                            val apiLink = getApiUrl(
-                                match.groups[1]?.value.toString(),
-                                match.groups[2]?.value.toString()
-                            )
+                            val raw = match.groups[1]?.value.toString()
+                            val json = Json(JsonConfiguration(ignoreUnknownKeys = true)).parse(Babe.serializer(), raw)
 
-                            // next step
-                            getSourceArticle(apiLink)
+                            listener?.onSetArticle(url, json.article.title)
+                            val apiLink = getApiUrl(json.article.groupId, json.article.articleId)
+
+                            if (json.article.articleType == "video") {
+                                listener?.onFinish(false)
+                            } else {
+                                getSourceArticle(apiLink)
+                            }
                             return
                         }
 
-                        // regex1 is fail
-                        // regex2 : find groupId, articleId
+                        // regex json is fail, use current url
+                        val currentUrl = response.networkResponse?.request?.url.toString()
                         match = Regex("/[\\w+]?(\\d+)\\?.+gid=(\\d+)&").find(currentUrl)
                         if (match != null) {
                             val apiLink = getApiUrl(
@@ -126,7 +135,9 @@ class BabeClient(private val context: Context) {
                             .replace("\\\"", "\"")
 
                         // save to cache : article.json
-                        // Content.toFile(applicationContext, "article.json", content)
+                        if (BuildConfig.DEBUG) {
+                            Content.toFile(context, "article.json", content)
+                        }
 
                         // regex title & http url
                         val match = Regex("class=\"title\">(.+?)</div.+href=\"(https?://.+?)\"").find(content)
