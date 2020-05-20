@@ -123,18 +123,18 @@ class ShareActivity : AppCompatActivity() {
 
         runOnUiThread {
             val editText = findViewById<EditText>(R.id.txt_article)
-            editText.setText(text)
-            editText.setSelection(text.length)
+            editText.setText(article)
+            editText.setSelection(article.length)
             editText.clearFocus()
         }
     }
 
     private fun setAddress(text: String) {
-        address = text
+        address = text.trim()
         if (!uiMode) return
 
         runOnUiThread {
-            findViewById<EditText>(R.id.txt_address).setText(text)
+            findViewById<EditText>(R.id.txt_address).setText(address)
         }
     }
 
