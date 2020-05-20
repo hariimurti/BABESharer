@@ -1,4 +1,4 @@
-package net.harimurti.babesharer
+package net.harimurti.babesharer.utils
 
 class UserAgent {
     companion object {

@@ -1,4 +1,4 @@
-package net.harimurti.babesharer
+package net.harimurti.babesharer.utils
 
 import android.content.Context
 import android.os.Build
@@ -9,6 +9,8 @@ import kotlinx.serialization.UnstableDefault
 import okhttp3.*
 import java.io.IOException
 import kotlinx.serialization.json.*
+import net.harimurti.babesharer.BuildConfig
+import net.harimurti.babesharer.R
 import net.harimurti.babesharer.json.Babe
 
 class BabeClient(private val context: Context) {
@@ -48,7 +50,9 @@ class BabeClient(private val context: Context) {
     fun getArticle(url: String) {
         val request = Request.Builder()
             .url(url)
-            .header("User-Agent", UserAgent.apple())
+            .header("User-Agent",
+                UserAgent.apple()
+            )
             .build()
 
         listener?.onStart()
@@ -68,7 +72,11 @@ class BabeClient(private val context: Context) {
 
                         // save to cache : babe.html
                         if (BuildConfig.DEBUG) {
-                            Content.toFile(context, "babe.html", content)
+                            Content.toFile(
+                                context,
+                                "babe.html",
+                                content
+                            )
                         }
 
                         // regex json
@@ -116,7 +124,9 @@ class BabeClient(private val context: Context) {
     private fun getSourceArticle(url: String) {
         val request = Request.Builder()
             .url(url)
-            .header("User-Agent", UserAgent.babe())
+            .header("User-Agent",
+                UserAgent.babe()
+            )
             .addHeader("Cookie", getCookies())
             .addHeader("Accept", "application/json")
             .build()
@@ -136,7 +146,11 @@ class BabeClient(private val context: Context) {
 
                         // save to cache : article.json
                         if (BuildConfig.DEBUG) {
-                            Content.toFile(context, "article.json", content)
+                            Content.toFile(
+                                context,
+                                "article.json",
+                                content
+                            )
                         }
 
                         // regex title & http url

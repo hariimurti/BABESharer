@@ -1,4 +1,4 @@
-package net.harimurti.babesharer
+package net.harimurti.babesharer.utils
 
 import android.content.Context
 import android.util.Log
