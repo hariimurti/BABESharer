@@ -50,9 +50,7 @@ class BabeClient(private val context: Context) {
     fun getArticle(url: String) {
         val request = Request.Builder()
             .url(url)
-            .header("User-Agent",
-                UserAgent.apple()
-            )
+            .header("User-Agent", UserAgent.apple())
             .build()
 
         listener?.onStart()
@@ -66,52 +64,34 @@ class BabeClient(private val context: Context) {
                 response.use {
                     if (response.isSuccessful) {
                         // website content
+                        // val currentUrl = response.networkResponse?.request?.url.toString()
                         val content = response.body?.string().toString()
                             .replace("\\\"", "\"")
                             .replace("\\\\\"", "\\\"")
 
                         // save to cache : babe.html
                         if (BuildConfig.DEBUG) {
-                            Content.toFile(
-                                context,
-                                "babe.html",
-                                content
-                            )
+                            Content.toFile(context, "babe.html", content)
                         }
 
                         // regex json
-                        var match = Regex("INITIAL_STATE.+JSON\\.parse\\(\"(.+?)\"\\);").find(content)
-                        if (match != null) {
-                            val raw = match.groups[1]?.value.toString()
-                            val json = Json(JsonConfiguration(ignoreUnknownKeys = true)).parse(Babe.serializer(), raw)
-
-                            listener?.onSetArticle(url, json.article.title)
-                            val apiLink = getApiUrl(json.article.groupId, json.article.articleId)
-
-                            if (json.article.articleType == "video") {
-                                listener?.onFinish(false)
-                            } else {
-                                getSourceArticle(apiLink)
-                            }
+                        val match = Regex("INITIAL_STATE.+JSON\\.parse\\(\"(.+?)\"\\);").find(content)
+                        if (match == null) {
+                            // fail get json
+                            listener?.onFinish(true)
                             return
                         }
 
-                        // regex json is fail, use current url
-                        val currentUrl = response.networkResponse?.request?.url.toString()
-                        match = Regex("/[\\w+]?(\\d+)\\?.+gid=(\\d+)&").find(currentUrl)
-                        if (match != null) {
-                            val apiLink = getApiUrl(
-                                match.groups[2]?.value.toString(),
-                                match.groups[1]?.value.toString()
-                            )
+                        val json = Json(JsonConfiguration(ignoreUnknownKeys = true))
+                            .parse(Babe.serializer(), match.groups[1]?.value.toString())
 
-                            // next step
-                            getSourceArticle(apiLink)
-                            return
+                        listener?.onSetArticle(url, json.article.title)
+
+                        if (json.article.articleType == "article") {
+                            getSourceArticle(getApiUrl(json.article.groupId, json.article.articleId))
+                        } else {
+                            listener?.onFinish(false)
                         }
-
-                        // fail get articleid
-                        listener?.onFinish(true)
                     }
                     else {
                         listener?.onResponseError(response)
@@ -124,9 +104,7 @@ class BabeClient(private val context: Context) {
     private fun getSourceArticle(url: String) {
         val request = Request.Builder()
             .url(url)
-            .header("User-Agent",
-                UserAgent.babe()
-            )
+            .header("User-Agent", UserAgent.babe())
             .addHeader("Cookie", getCookies())
             .addHeader("Accept", "application/json")
             .build()
@@ -146,11 +124,7 @@ class BabeClient(private val context: Context) {
 
                         // save to cache : article.json
                         if (BuildConfig.DEBUG) {
-                            Content.toFile(
-                                context,
-                                "article.json",
-                                content
-                            )
+                            Content.toFile(context, "article.json", content)
                         }
 
                         // regex title & http url
