@@ -1,158 +1,203 @@
 package net.harimurti.babesharer
 
 import android.content.*
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.InputType
 import android.util.Log
+import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
+import kotlinx.serialization.UnstableDefault
 import net.harimurti.babesharer.utils.BabeClient
-import okhttp3.Response
-import java.io.IOException
+import net.harimurti.babesharer.utils.PackageFinder
+import net.harimurti.babesharer.utils.ViewMode
 
 class ShareActivity : AppCompatActivity() {
-    private var uiMode = true
-    private var article = ""
-    private var address = ""
+    private val sharecode = 2020
+    private var telegram: String? = null
+    private var whatsapp: String? = null
 
+    @UnstableDefault
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_share)
 
-        uiMode = getSharedPreferences("preferences", Context.MODE_PRIVATE)
-            .getBoolean(getString(R.string.pref_ui_mode), true)
+        // switch view -> none
+        switchView(ViewMode.NONE)
 
-        if (uiMode) {
-            setContentView(R.layout.activity_share_full)
-            // disable input
-            findViewById<EditText>(R.id.txt_address).inputType = InputType.TYPE_NULL
-        }
-        else {
-            setContentView(R.layout.activity_share_loading)
+        // get send intent
+        if (resources.getStringArray(R.array.babeapps).find{ p -> p == callingPackage}.isNullOrEmpty()) {
+            shareChooser(intent)
+            return
         }
 
-        if (intent.action.equals(Intent.ACTION_SEND) && intent.type.equals("text/plain")) {
-            val text = intent.getStringExtra(Intent.EXTRA_TEXT)
-            if (text == null || text.isEmpty()) return
+        /*if (!(intent.action.equals(Intent.ACTION_SEND) && intent.type.equals("text/plain"))) {
+            this.finish()
+            return
+        }*/
 
-            // find (title)(http://share.babe.news/…)
-            val match = Regex("([\\s\\S]+?)(https?://share\\.babe\\.news/.+)")
-                .findAll(text).firstOrNull()
-            if (match != null) {
-                setArticle(match.groups[1]?.value.toString())
-                setAddress(match.groups[2]?.value.toString())
-            } else {
-                shareText(text)
-                this.finish()
-                return
-            }
+        // get text from intent
+        val text = intent.getStringExtra(Intent.EXTRA_TEXT)
+        if (text.isNullOrEmpty()) {
+            this.finish()
+            return
+        }
+        // find (title)(http://share.babe.news/…)
+        val match = Regex("([\\s\\S]+?)(https?://share\\.babe\\.news/.+)")
+            .findAll(text.toString())
+            .firstOrNull()
+        if (match == null) {
+            shareChooser(intent)
+            return
         }
 
-        // set window as dialog fullscreen
-        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-        // make statusbar transparent
-        window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        // update article text
+        val link = match.groups[2]?.value.toString()
+        setArticle(link, match.groups[1]?.value.toString())
 
         // process the link
         BabeClient(this)
             .setCallback(object : BabeClient.OnCallback {
                 override fun onStart() {
-                    setProgress(true)
+                    switchView(ViewMode.LOADING)
+                    initButtonShare()
                 }
 
-                override fun onClientError(e: IOException) {
-                    setProgress(false)
-                    toastMessage(getString(R.string.toast_request_failure))
-                    if (!uiMode) shareText()
+                override fun onError(msg: String) {
+                    toastMessage(msg, Gravity.CENTER)
                 }
 
-                override fun onResponseError(response: Response) {
-                    setProgress(false)
-                    toastMessage("HTTP Response : ${response.code}")
-                    if (!uiMode) shareText()
+                override fun onUpdateArticle(url: String, text: String) {
+                    setArticle(url, text)
                 }
 
-                override fun onSetArticle(url: String, text: String) {
-                    setAddress(url)
-                    setArticle(text)
+                override fun onFinish() {
+                    switchView(ViewMode.SHARE)
                 }
-
-                override fun onFinish(isError: Boolean) {
-                    setProgress(false)
-                    if (isError) toastMessage(getString(R.string.toast_original_article_not_found))
-                    if (!uiMode) shareText()
-                }
-            }).getArticle(address)
-    }
-
-    fun onLayoutClick(view: View) {
-        this.finish()
-    }
-
-    fun onFabAction(view: View) {
-        if (article.isNotEmpty()) {
-            shareText()
-        } else {
-            toastMessage(getString(R.string.toast_article_is_empty))
-        }
-    }
-
-    private fun toastMessage(message: String, vararg strings: String) {
-        runOnUiThread {
-            Toast.makeText(this, String.format(message, strings), Toast.LENGTH_SHORT).show()
-            Log.e("Toast", String.format(message, strings))
-        }
-    }
-
-    private fun setProgress(state: Boolean) {
-        if (!uiMode) return
-        runOnUiThread {
-            findViewById<View>(R.id.layout_progress)
-                .visibility = if (state) View.VISIBLE else View.GONE
-            findViewById<View>(R.id.fab_action).isEnabled = !state
-            findViewById<EditText>(R.id.txt_article).isEnabled = !state
-            findViewById<EditText>(R.id.txt_address).isEnabled = !state
-        }
-    }
-
-    private fun setArticle(text: String) {
-        article = text.trim()
-        if (!uiMode) return
-
-        runOnUiThread {
-            val editText = findViewById<EditText>(R.id.txt_article)
-            editText.setText(article)
-            editText.setSelection(article.length)
-            editText.clearFocus()
-        }
-    }
-
-    private fun setAddress(text: String) {
-        address = text.trim()
-        if (!uiMode) return
-
-        runOnUiThread {
-            findViewById<EditText>(R.id.txt_address).setText(address)
-        }
-    }
-
-    private fun shareText(text: String? = null) {
-        val extra = if (text.isNullOrEmpty()) "$article\n\nLink » $address".trim() else text.trim()
-        val sendIntent = Intent().apply {
-            action = Intent.ACTION_SEND
-            type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, extra)
-        }
-
-        val shareIntent = Intent.createChooser(sendIntent, getString(R.string.title_share))
-        runOnUiThread { startActivityForResult(shareIntent, 0) }
+            })
+            .getArticle(link)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == sharecode)
+            this.finish()
+    }
+
+    fun onRootLayoutClick(view: View) {
         this.finish()
+    }
+
+    fun onShareClick(view: View) {
+        if (view.tag == getString(R.string.tag_copy)) {
+            shareToClipboard()
+        }
+        if (view.tag == getString(R.string.tag_share)) {
+            shareChooser()
+        }
+        if (view.tag == getString(R.string.tag_telegram)) {
+            shareToPackage(telegram)
+        }
+        if (view.tag == getString(R.string.tag_whatsapp)) {
+            shareToPackage(whatsapp)
+        }
+    }
+
+    private fun initButtonShare() {
+        telegram = PackageFinder(this)
+            .getPackageName(resources.getStringArray(R.array.telegram))
+        runOnUiThread {
+            val tg = findViewById<ImageButton>(R.id.btn_telegram)
+            if (telegram == null) {
+                tg.isEnabled = false
+                tg.setColorFilter(Color.parseColor("#40000000"))
+            }
+        }
+
+        whatsapp = PackageFinder(this)
+            .getPackageName(resources.getStringArray(R.array.whatsapp))
+        runOnUiThread {
+            val wa = findViewById<ImageButton>(R.id.btn_whatsapp)
+            if (whatsapp == null) {
+                wa.isEnabled = false
+                wa.setColorFilter(Color.parseColor("#40000000"))
+            }
+        }
+    }
+
+    private fun switchView(view: Int) {
+        runOnUiThread {
+            findViewById<View>(R.id.layout_loading).visibility =
+                if (view == ViewMode.LOADING) View.VISIBLE else View.GONE
+            findViewById<View>(R.id.card_share).visibility =
+                if (view == ViewMode.SHARE) View.VISIBLE else View.GONE
+        }
+    }
+
+    private fun toastMessage(message: String, gravity: Int = Gravity.BOTTOM) {
+        runOnUiThread {
+            val toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
+            toast.setGravity(gravity, 0, 0)
+            toast.show()
+
+            if (BuildConfig.DEBUG) Log.e("Toast", message)
+        }
+    }
+
+    private fun setArticle(url: String, text: String = "") {
+        runOnUiThread {
+            findViewById<EditText>(R.id.edit_text).apply {
+                setText((text + "\n\n" + url).trim())
+                //setSelection(text.length)
+                clearFocus()
+            }
+        }
+    }
+
+    private fun getArticle(): String {
+        return findViewById<EditText>(R.id.edit_text).text.toString().trim()
+    }
+
+    private fun shareToClipboard() {
+        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val data = ClipData.newPlainText(getString(R.string.title_share), getArticle())
+        clipboard.setPrimaryClip(data)
+        toastMessage(getString(R.string.copied_into_clipboard))
+        this.finish()
+    }
+
+    private fun shareChooser(bundle: Intent? = null) {
+        switchView(ViewMode.NONE)
+
+        var intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, getArticle())
+        }
+
+        if (bundle != null) intent = bundle
+
+        runOnUiThread {
+            startActivityForResult(
+                Intent.createChooser(intent, getString(R.string.title_share)),
+                sharecode
+            )
+        }
+    }
+
+    private fun shareToPackage(packageName: String?) {
+        val intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, getArticle())
+            setPackage(packageName)
+        }
+
+        runOnUiThread {
+            startActivityForResult(intent, sharecode)
+        }
     }
 }

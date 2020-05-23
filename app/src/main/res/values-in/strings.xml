@@ -1,22 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="title_share">Bagikan Artikel</string>
-    <string name="label_article">Artikel :</string>
-    <string name="label_link">Tautan :</string>
-    <string name="toast_request_failure">Permintaan Gagal</string>
-    <string name="toast_original_article_not_found">Artikel asli tidak ditemukan</string>
-    <string name="alert_warning_title">Peringatan</string>
-    <string name="alert_please_install_first">Silahkan install BABE dari playstore terlebih dahulu!</string>
-    <string name="toast_article_is_empty">Artikel kosong!</string>
-    <string name="button_install">PlayStore</string>
-    <string name="button_exit">Keluar</string>
-    <string name="without_ui">Sederhana</string>
-    <string name="with_ui">Komplit</string>
-    <string name="sample_article">Contoh judul artikel yang akan di share.</string>
+    <string name="request_failure">Permintaan Gagal</string>
+    <string name="original_article_not_found">Artikel asli tidak ditemukan</string>
     <string name="please_wait">Tunggu Sebentar</string>
-    <string name="select_mode">Pilih Mode</string>
-    <string name="share_flow">Alur Bagikan</string>
-    <string name="installed">Terpasang</string>
-    <string name="babe_this_app_target">%s » %s » Target</string>
-    <string name="information">Informasi</string>
+    <string name="copied_into_clipboard">Tersalin</string>
 </resources>

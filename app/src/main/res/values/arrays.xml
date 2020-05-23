@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <array name="packages">
+    <array name="babeapps">
         <item>id.co.babe</item>
         <item>com.ss.android.article.master.id</item>
         <item>technology.mainspring.babenews</item>
     </array>
-    <array name="market">
-        <item>market://dev?id=5298464247075751253</item>
-        <item>https://play.google.com/store/apps/dev?id=5298464247075751253</item>
+    <array name="whatsapp">
+        <item>com.whatsapp</item>
+        <item>com.gbwhatsapp</item>
+        <item>com.fmwhatsapp</item>
+        <item>com.jtwhatsapp</item>
+        <item>com.yowhatsapp</item>
+        <item>com.cocowhatsapp</item>
+    </array>
+    <array name="telegram">
+        <item>org.telegram.messenger</item>
+        <item>org.thunderdog.challegram</item>
+        <item>org.telegram.plus</item>
     </array>
     <array name="pageall">
         <item>tribunnews.com|?page=all</item>

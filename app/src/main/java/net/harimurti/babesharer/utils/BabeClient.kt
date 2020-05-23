@@ -16,13 +16,13 @@ import net.harimurti.babesharer.json.Babe
 class BabeClient(private val context: Context) {
     interface OnCallback {
         fun onStart()
-        fun onClientError(e: IOException)
-        fun onResponseError(response: Response)
-        fun onSetArticle(url: String, text: String)
-        fun onFinish(isError: Boolean)
+        fun onError(msg: String)
+        fun onUpdateArticle(url: String, text: String)
+        fun onFinish()
     }
 
     private var listener: OnCallback? = null
+    private var title = ""
 
     fun setCallback(listener: OnCallback): BabeClient {
         this.listener = listener
@@ -57,7 +57,8 @@ class BabeClient(private val context: Context) {
         OkHttpClient().newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 Log.e("OkHttp", "Request Failure", e)
-                listener?.onClientError(e)
+                listener?.onError(context.getString(R.string.request_failure))
+                listener?.onFinish()
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -78,23 +79,28 @@ class BabeClient(private val context: Context) {
                         val match = Regex("INITIAL_STATE.+JSON\\.parse\\(\"(.+?)\"\\);").find(content)
                         if (match == null) {
                             // fail get json
-                            listener?.onFinish(true)
+                            listener?.onError(context.getString(R.string.original_article_not_found))
+                            listener?.onFinish()
                             return
                         }
 
                         val json = Json(JsonConfiguration(ignoreUnknownKeys = true))
                             .parse(Babe.serializer(), match.groups[1]?.value.toString())
 
-                        listener?.onSetArticle(url, json.article.title)
+                        title = json.article.title
+                        //if (!Regex("[\\.|\\?|!]\$").matches(title)) title += "."
+
+                        listener?.onUpdateArticle(url, title)
 
                         if (json.article.articleType == "article") {
                             getSourceArticle(getApiUrl(json.article.groupId, json.article.articleId))
                         } else {
-                            listener?.onFinish(false)
+                            listener?.onFinish()
                         }
                     }
                     else {
-                        listener?.onResponseError(response)
+                        listener?.onError("HTTP Response : ${response.code}")
+                        listener?.onFinish()
                     }
                 }
             }
@@ -112,7 +118,8 @@ class BabeClient(private val context: Context) {
         OkHttpClient().newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 Log.e("OkHttp", "Request Failure", e)
-                listener?.onClientError(e)
+                listener?.onError(context.getString(R.string.request_failure))
+                listener?.onFinish()
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -131,16 +138,20 @@ class BabeClient(private val context: Context) {
                         val match = Regex("class=\"title\">(.+?)</div.+href=\"(https?://.+?)\"").find(content)
                         if (match != null) {
                             // html decode special char
-                            val title = decodeHtml(match.groups[1]?.value.toString())
+                            if (title.isEmpty()) title = decodeHtml(match.groups[1]?.value.toString())
                             val link = linkNormalizer(match.groups[2]?.value.toString())
 
-                            listener?.onSetArticle(link, title)
-                            listener?.onFinish(false)
+                            listener?.onUpdateArticle(link, title)
+                            listener?.onFinish()
                         }
-                        else listener?.onFinish(true)
+                        else {
+                            listener?.onError(context.getString(R.string.original_article_not_found))
+                            listener?.onFinish()
+                        }
                     }
                     else {
-                        listener?.onResponseError(response)
+                        listener?.onError("HTTP Response : ${response.code}")
+                        listener?.onFinish()
                     }
                 }
             }

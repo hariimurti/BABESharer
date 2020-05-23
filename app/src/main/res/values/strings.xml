@@ -1,26 +1,12 @@
 <resources>
-    <string name="app_name" translatable="false">BABE Sharer</string>
+    <string name="app_name" translatable="false">BABE - Article Finder</string>
     <string name="title_share">Share Article</string>
-    <string name="label_article">Article :</string>
-    <string name="label_link">Link :</string>
-    <string name="toast_request_failure">Request Failure</string>
-    <string name="toast_original_article_not_found">Original article not found</string>
-    <string name="alert_warning_title">Warning</string>
-    <string name="alert_please_install_first">Please install BABE from playstore first!</string>
-    <string name="toast_article_is_empty">Article is empty!</string>
-    <string name="button_install">PlayStore</string>
-    <string name="button_exit">Exit</string>
-    <string name="pref_ui_mode" translatable="false">ui_mode</string>
-    <string name="without_ui">Without UI</string>
-    <string name="with_ui">With UI</string>
-    <string name="sample_article">This is sample of the article.</string>
-    <string name="sample_link" translatable="false">http://share.babe.news/...</string>
+    <string name="request_failure">Request Failure</string>
+    <string name="original_article_not_found">Original article not found</string>
     <string name="please_wait">Please Wait</string>
-    <string name="select_mode">Select Mode</string>
-    <string name="share_flow">Share Flow</string>
-    <string name="installed">Installed</string>
-    <string name="babe_this_app_target">%s » %s » Target</string>
-    <string name="information">Information</string>
-    <string name="colon" translatable="false">:</string>
-    <string name="strip" translatable="false">-</string>
+    <string name="tag_share" translatable="false">share</string>
+    <string name="tag_telegram" translatable="false">telegram</string>
+    <string name="tag_whatsapp" translatable="false">whatsapp</string>
+    <string name="tag_copy" translatable="false">copy</string>
+    <string name="copied_into_clipboard">Copied into clipboard</string>
 </resources>
