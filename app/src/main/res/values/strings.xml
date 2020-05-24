@@ -8,5 +8,6 @@
     <string name="tag_telegram" translatable="false">telegram</string>
     <string name="tag_whatsapp" translatable="false">whatsapp</string>
     <string name="tag_copy" translatable="false">copy</string>
+    <string name="tag_send" translatable="false">send</string>
     <string name="copied_into_clipboard">Copied into clipboard</string>
 </resources>

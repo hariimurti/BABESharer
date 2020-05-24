@@ -95,6 +95,9 @@ class ShareActivity : AppCompatActivity() {
         if (view.tag == getString(R.string.tag_copy)) {
             shareToClipboard()
         }
+        if (view.tag == getString(R.string.tag_send)) {
+            shareDefault()
+        }
         if (view.tag == getString(R.string.tag_share)) {
             shareChooser()
         }
@@ -185,6 +188,20 @@ class ShareActivity : AppCompatActivity() {
                 Intent.createChooser(intent, getString(R.string.title_share)),
                 sharecode
             )
+        }
+    }
+
+    private fun shareDefault() {
+        switchView(ViewMode.NONE)
+
+        val intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, getArticle())
+        }
+
+        runOnUiThread {
+            startActivityForResult(intent, sharecode)
         }
     }
 

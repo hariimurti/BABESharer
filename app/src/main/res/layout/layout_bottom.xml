@@ -48,10 +48,23 @@
         android:onClick="onShareClick"
         android:tag="@string/tag_telegram"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_share"
+        app:layout_constraintEnd_toStartOf="@+id/btn_send"
         app:layout_constraintStart_toEndOf="@+id/btn_whatsapp"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_telegram" />
+
+    <ImageButton
+        android:id="@+id/btn_send"
+        style="@style/AppButton"
+        android:layout_width="@dimen/icon_size"
+        android:layout_height="@dimen/icon_size"
+        android:onClick="onShareClick"
+        android:tag="@string/tag_send"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_share"
+        app:layout_constraintStart_toEndOf="@+id/btn_telegram"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_send" />
 
     <ImageButton
         android:id="@+id/btn_share"
@@ -62,7 +75,7 @@
         android:tag="@string/tag_share"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_telegram"
+        app:layout_constraintStart_toEndOf="@+id/btn_send"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_share" />
 
