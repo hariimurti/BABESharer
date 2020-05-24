@@ -5,8 +5,6 @@
     android:id="@+id/layout_share"
     android:layout_width="0dp"
     android:layout_height="@dimen/layout_icon_height"
-    android:layout_marginStart="@dimen/icon_margin"
-    android:layout_marginEnd="@dimen/icon_margin"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"

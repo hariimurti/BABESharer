@@ -31,7 +31,7 @@
             android:id="@+id/text_wait"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/text_wait_margin_top"
             android:gravity="center"
             android:text="@string/please_wait"
             android:textColor="@color/text_color_dark"
@@ -56,17 +56,12 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/card_margin"
-            android:layout_marginTop="@dimen/card_margin"
-            android:layout_marginEnd="@dimen/card_margin"
-            android:layout_marginBottom="@dimen/card_margin_bottom">
+            android:layout_margin="@dimen/card_margin">
 
             <TextView
                 android:id="@+id/text_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingStart="@dimen/title_padding"
-                android:paddingEnd="@dimen/title_padding"
                 android:text="@string/title_share"
                 android:textColor="@color/text_color_light"
                 android:textSize="@dimen/title_size"
@@ -78,24 +73,37 @@
                 android:id="@+id/line_title"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/line_height"
+                android:layout_marginTop="10dp"
                 android:background="@color/color_accent"
-                app:layout_constraintEnd_toEndOf="@id/text_title"
-                app:layout_constraintStart_toStartOf="@+id/text_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_title" />
 
             <EditText
                 android:id="@+id/edit_text"
+                style="@style/Base.Widget.MaterialComponents.TextInputEditText"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:gravity="start"
                 android:inputType="text|textCapCharacters|textMultiLine"
                 android:scrollHorizontally="false"
-                app:layout_constraintBottom_toTopOf="@+id/layout_share"
+                android:textSize="@dimen/edit_text_size"
+                app:layout_constraintBottom_toTopOf="@+id/line_share"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/line_title" />
 
-            <include layout="@layout/layout_bottom" />
+            <View
+                android:id="@+id/line_share"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/line_height"
+                android:background="@color/color_accent"
+                app:layout_constraintBottom_toTopOf="@+id/layout_share"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edit_text" />
+
+            <include layout="@layout/layout_share" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
