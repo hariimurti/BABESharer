@@ -12,15 +12,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_loading"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible">
+        android:layout_height="match_parent">
 
         <com.github.ybq.android.spinkit.SpinKitView
             android:id="@+id/spinkit"
             style="@style/SpinKitView.Large.FadingCircle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:SpinKit_Color="@color/color_primary"
+            app:SpinKit_Color="@color/color_accent"
             app:layout_constraintBottom_toTopOf="@id/text_wait"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
@@ -34,7 +33,7 @@
             android:layout_marginTop="@dimen/text_wait_margin_top"
             android:gravity="center"
             android:text="@string/please_wait"
-            android:textColor="@color/text_color_dark"
+            android:textColor="@color/color_accent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
