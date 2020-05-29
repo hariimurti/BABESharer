@@ -9,7 +9,7 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     tools:showIn="@layout/activity_share"
-    tools:ignore="ContentDescription">
+    tools:ignore="ContentDescription,SmallSp">
 
     <ImageButton
         android:id="@+id/btn_copy"
@@ -17,13 +17,28 @@
         android:layout_width="@dimen/icon_size"
         android:layout_height="@dimen/icon_size"
         android:onClick="onShareClick"
-        android:tag="@string/tag_copy"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:tag="@string/label_copy"
+        app:layout_constraintBottom_toTopOf="@+id/txt_copy"
         app:layout_constraintEnd_toStartOf="@+id/btn_whatsapp"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
         app:srcCompat="@drawable/ic_copy" />
+
+    <TextView
+        android:id="@+id/txt_copy"
+        android:layout_width="@dimen/label_icon_width"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="@string/label_copy"
+        android:textAlignment="center"
+        android:textSize="@dimen/label_icon_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/btn_copy"
+        app:layout_constraintStart_toStartOf="@+id/btn_copy"
+        app:layout_constraintTop_toBottomOf="@+id/btn_copy" />
 
     <ImageButton
         android:id="@+id/btn_whatsapp"
@@ -31,12 +46,28 @@
         android:layout_width="@dimen/icon_size"
         android:layout_height="@dimen/icon_size"
         android:onClick="onShareClick"
-        android:tag="@string/tag_whatsapp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:tag="@string/label_whatsapp"
+        app:layout_constraintBottom_toTopOf="@+id/txt_whatsapp"
         app:layout_constraintEnd_toStartOf="@+id/btn_telegram"
         app:layout_constraintStart_toEndOf="@+id/btn_copy"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
         app:srcCompat="@drawable/ic_whatsapp" />
+
+    <TextView
+        android:id="@+id/txt_whatsapp"
+        android:layout_width="@dimen/label_icon_width"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="@string/label_whatsapp"
+        android:textAlignment="center"
+        android:textSize="@dimen/label_icon_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/btn_whatsapp"
+        app:layout_constraintStart_toEndOf="@+id/txt_copy"
+        app:layout_constraintStart_toStartOf="@+id/btn_whatsapp"
+        app:layout_constraintTop_toBottomOf="@+id/btn_whatsapp" />
 
     <ImageButton
         android:id="@+id/btn_telegram"
@@ -44,12 +75,27 @@
         android:layout_width="@dimen/icon_size"
         android:layout_height="@dimen/icon_size"
         android:onClick="onShareClick"
-        android:tag="@string/tag_telegram"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:tag="@string/label_telegram"
+        app:layout_constraintBottom_toTopOf="@+id/txt_telegram"
         app:layout_constraintEnd_toStartOf="@+id/btn_share"
         app:layout_constraintStart_toEndOf="@+id/btn_whatsapp"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
         app:srcCompat="@drawable/ic_telegram" />
+
+    <TextView
+        android:id="@+id/txt_telegram"
+        android:layout_width="@dimen/label_icon_width"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="@string/label_telegram"
+        android:textAlignment="center"
+        android:textSize="@dimen/label_icon_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/btn_telegram"
+        app:layout_constraintStart_toStartOf="@+id/btn_telegram"
+        app:layout_constraintTop_toBottomOf="@+id/btn_telegram" />
 
     <ImageButton
         android:id="@+id/btn_share"
@@ -57,12 +103,27 @@
         android:layout_width="@dimen/icon_size"
         android:layout_height="@dimen/icon_size"
         android:onClick="onShareClick"
-        android:tag="@string/tag_share"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:tag="@string/label_share"
+        app:layout_constraintBottom_toTopOf="@+id/txt_share"
         app:layout_constraintEnd_toStartOf="@+id/btn_more"
         app:layout_constraintStart_toEndOf="@+id/btn_telegram"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
         app:srcCompat="@drawable/ic_share" />
+
+    <TextView
+        android:id="@+id/txt_share"
+        android:layout_width="@dimen/label_icon_width"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="@string/label_share"
+        android:textAlignment="center"
+        android:textSize="@dimen/label_icon_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/btn_share"
+        app:layout_constraintStart_toStartOf="@+id/btn_share"
+        app:layout_constraintTop_toBottomOf="@+id/btn_share" />
 
     <ImageButton
         android:id="@+id/btn_more"
@@ -70,11 +131,26 @@
         android:layout_width="@dimen/icon_size"
         android:layout_height="@dimen/icon_size"
         android:onClick="onShareClick"
-        android:tag="@string/tag_more"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:tag="@string/label_more"
+        app:layout_constraintBottom_toTopOf="@+id/txt_more"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_share"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
         app:srcCompat="@drawable/ic_more" />
+
+    <TextView
+        android:id="@+id/txt_more"
+        android:layout_width="@dimen/label_icon_width"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="@string/label_more"
+        android:textAlignment="center"
+        android:textSize="@dimen/label_icon_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/btn_more"
+        app:layout_constraintStart_toStartOf="@+id/btn_more"
+        app:layout_constraintTop_toBottomOf="@+id/btn_more" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

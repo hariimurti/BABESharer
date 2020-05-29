@@ -5,4 +5,7 @@
     <string name="original_article_not_found">Artikel asli tidak ditemukan</string>
     <string name="please_wait">Tunggu Sebentar</string>
     <string name="copied_into_clipboard">Tersalin</string>
+    <string name="label_copy">Salin</string>
+    <string name="label_share">Bagikan</string>
+    <string name="label_more">Lain</string>
 </resources>

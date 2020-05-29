@@ -92,19 +92,19 @@ class ShareActivity : AppCompatActivity() {
     }
 
     fun onShareClick(view: View) {
-        if (view.tag == getString(R.string.tag_copy)) {
+        if (view.tag == getString(R.string.label_copy)) {
             shareToClipboard()
         }
-        if (view.tag == getString(R.string.tag_share)) {
-            shareDefault()
-        }
-        if (view.tag == getString(R.string.tag_more)) {
+        if (view.tag == getString(R.string.label_more)) {
             shareChooser()
         }
-        if (view.tag == getString(R.string.tag_telegram)) {
+        if (view.tag == getString(R.string.label_share)) {
+            shareDefault()
+        }
+        if (view.tag == getString(R.string.label_telegram)) {
             shareToPackage(telegram)
         }
-        if (view.tag == getString(R.string.tag_whatsapp)) {
+        if (view.tag == getString(R.string.label_whatsapp)) {
             shareToPackage(whatsapp)
         }
     }

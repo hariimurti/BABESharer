@@ -6,9 +6,11 @@
     <dimen name="card_radius">10dp</dimen>
     <dimen name="title_size">20sp</dimen>
     <dimen name="line_height">2dp</dimen>
-    <dimen name="layout_icon_height">55dp</dimen>
+    <dimen name="layout_icon_height">70dp</dimen>
     <dimen name="icon_size">40dp</dimen>
     <dimen name="icon_margin">2dp</dimen>
     <dimen name="edit_text_size">14sp</dimen>
     <dimen name="text_wait_margin_top">10dp</dimen>
+    <dimen name="label_icon_size">10sp</dimen>
+    <dimen name="label_icon_width">50dp</dimen>
 </resources>
