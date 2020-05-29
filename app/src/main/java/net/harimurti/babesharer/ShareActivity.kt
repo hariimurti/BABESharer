@@ -95,10 +95,10 @@ class ShareActivity : AppCompatActivity() {
         if (view.tag == getString(R.string.tag_copy)) {
             shareToClipboard()
         }
-        if (view.tag == getString(R.string.tag_send)) {
+        if (view.tag == getString(R.string.tag_share)) {
             shareDefault()
         }
-        if (view.tag == getString(R.string.tag_share)) {
+        if (view.tag == getString(R.string.tag_more)) {
             shareChooser()
         }
         if (view.tag == getString(R.string.tag_telegram)) {
@@ -112,21 +112,20 @@ class ShareActivity : AppCompatActivity() {
     private fun initButtonShare() {
         telegram = PackageFinder(this)
             .getPackageName(resources.getStringArray(R.array.telegram))
-        runOnUiThread {
-            val tg = findViewById<ImageButton>(R.id.btn_telegram)
-            if (telegram == null) {
-                tg.isEnabled = false
-                tg.setColorFilter(Color.parseColor("#40000000"))
-            }
-        }
-
         whatsapp = PackageFinder(this)
             .getPackageName(resources.getStringArray(R.array.whatsapp))
         runOnUiThread {
-            val wa = findViewById<ImageButton>(R.id.btn_whatsapp)
+            if (telegram == null) {
+                findViewById<ImageButton>(R.id.btn_telegram).apply {
+                    isEnabled = false
+                    setImageResource(R.drawable.ic_telegram_disable)
+                }
+            }
             if (whatsapp == null) {
-                wa.isEnabled = false
-                wa.setColorFilter(Color.parseColor("#40000000"))
+                findViewById<ImageButton>(R.id.btn_whatsapp).apply {
+                    isEnabled = false
+                    setImageResource(R.drawable.ic_whatsapp_disable)
+                }
             }
         }
     }

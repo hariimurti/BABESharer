@@ -7,4 +7,5 @@
     <color name="background_transparent">#80000000</color>
     <color name="text_color_light">@android:color/primary_text_light</color>
     <color name="text_color_dark">@android:color/primary_text_dark</color>
+    <color name="icon_base">#C5CAE9</color>
 </resources>
