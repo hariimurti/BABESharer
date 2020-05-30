@@ -17,7 +17,8 @@ class BabeClient(private val context: Context) {
     interface OnCallback {
         fun onStart()
         fun onError(msg: String)
-        fun onUpdateArticle(url: String, text: String)
+        fun onFoundTitle(text: String)
+        fun onFoundSource(link: String)
         fun onFinish()
     }
 
@@ -90,7 +91,7 @@ class BabeClient(private val context: Context) {
                         title = json.article.title
                         //if (!Regex("[\\.|\\?|!]\$").matches(title)) title += "."
 
-                        listener?.onUpdateArticle(url, title)
+                        listener?.onFoundTitle(title)
 
                         if (json.article.articleType == "article") {
                             getSourceArticle(getApiUrl(json.article.groupId, json.article.articleId))
@@ -139,9 +140,9 @@ class BabeClient(private val context: Context) {
                         if (match != null) {
                             // html decode special char
                             if (title.isEmpty()) title = decodeHtml(match.groups[1]?.value.toString())
-                            val link = linkNormalizer(match.groups[2]?.value.toString())
 
-                            listener?.onUpdateArticle(link, title)
+                            listener?.onFoundTitle(title)
+                            listener?.onFoundSource(linkNormalizer(match.groups[2]?.value.toString()))
                             listener?.onFinish()
                         }
                         else {

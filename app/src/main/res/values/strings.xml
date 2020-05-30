@@ -10,4 +10,10 @@
     <string name="label_telegram" translatable="false">Telegram</string>
     <string name="label_share">Share</string>
     <string name="label_more">More</string>
+    <string name="hint_article">Article</string>
+    <string name="hint_link">Link Source</string>
+    <string name="label_source">Source</string>
+    <string name="label_babe" translatable="false">Babe</string>
+    <string name="label_babe_and_source">Both</string>
+    <string name="alert_message_settings">Choose the link to share : Babe, source, or both?</string>
 </resources>

@@ -14,7 +14,7 @@ class PackageFinder(private val context: Context) {
             true
         } catch (e: Exception) {
             if (BuildConfig.DEBUG) {
-                Log.e("PackageFinder", "$packageName not installed")
+                Log.w("PackageFinder", "$packageName not installed")
             }
             false
         }

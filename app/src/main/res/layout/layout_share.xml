@@ -5,9 +5,6 @@
     android:id="@+id/layout_share"
     android:layout_width="0dp"
     android:layout_height="@dimen/layout_icon_height"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
     tools:showIn="@layout/activity_share"
     tools:ignore="ContentDescription,SmallSp">
 

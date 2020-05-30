@@ -1,35 +1,60 @@
 package net.harimurti.babesharer
 
 import android.content.*
-import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.view.Gravity
+import android.view.KeyEvent
 import android.view.View
-import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_share.*
 import kotlinx.serialization.UnstableDefault
 import net.harimurti.babesharer.utils.BabeClient
 import net.harimurti.babesharer.utils.PackageFinder
-import net.harimurti.babesharer.utils.ViewMode
+
 
 class ShareActivity : AppCompatActivity() {
-    private val sharecode = 2020
+    internal class ViewMode {
+        companion object {
+            const val NONE = 0
+            const val LOADING = 1
+            const val SHARE = 2
+        }
+    }
+
+    internal class Key {
+        companion object {
+            const val CODE = 2020
+            const val SOURCE = "share_source"
+            const val BABE = "share_babe"
+        }
+    }
+
+    private var linkSource: String? = null
+    private var linkBabe: String? = null
     private var telegram: String? = null
     private var whatsapp: String? = null
+
+    private lateinit var preferences: SharedPreferences
 
     @UnstableDefault
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_share)
 
+        // init preferences
+        preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE)
+
         // switch view -> none
         switchView(ViewMode.NONE)
+        text_link.editText?.inputType = InputType.TYPE_NULL
 
         // get send intent
-        if (resources.getStringArray(R.array.babeapps).find{ p -> p == callingPackage}.isNullOrEmpty()) {
+        if (resources.getStringArray(R.array.babeapps).find{ p -> p == callingPackage }.isNullOrEmpty()) {
             shareChooser(intent)
             return
         }
@@ -55,8 +80,9 @@ class ShareActivity : AppCompatActivity() {
         }
 
         // update article text
-        val link = match.groups[2]?.value.toString()
-        setArticle(link, match.groups[1]?.value.toString())
+        linkBabe = match.groups[2]?.value.toString()
+        updateLinkSource()
+        setArticleTitle(match.groups[1]?.value.toString())
 
         // process the link
         BabeClient(this)
@@ -70,30 +96,77 @@ class ShareActivity : AppCompatActivity() {
                     toastMessage(msg, Gravity.CENTER)
                 }
 
-                override fun onUpdateArticle(url: String, text: String) {
-                    setArticle(url, text)
+                override fun onFoundTitle(text: String) {
+                    setArticleTitle(text)
+                }
+
+                override fun onFoundSource(link: String) {
+                    linkSource = link
+                    updateLinkSource()
                 }
 
                 override fun onFinish() {
                     switchView(ViewMode.SHARE)
                 }
             })
-            .getArticle(link)
+            .getArticle(linkBabe!!)
+    }
+
+    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        return if (keyCode == KeyEvent.KEYCODE_MENU) {
+            onSettingClick(View(this))
+            true
+        } else super.onKeyUp(keyCode, event)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == sharecode)
-            this.finish()
+        if (requestCode == Key.CODE) this.finish()
     }
 
     fun onRootLayoutClick(view: View) {
-        this.finish()
+        //this.finish()
+    }
+
+    fun onSettingClick(view: View) {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.app_name)
+            .setMessage(R.string.alert_message_settings)
+            .setNeutralButton(getString(R.string.label_babe_and_source)) { _, _ ->
+                preferences.edit().apply {
+                    putBoolean(Key.SOURCE, true)
+                    putBoolean(Key.BABE, true)
+                    apply()
+                }
+                updateLinkSource()
+            }
+            .setPositiveButton(getString(R.string.label_source)) { _, _ ->
+                preferences.edit().apply {
+                    putBoolean(Key.SOURCE, true)
+                    putBoolean(Key.BABE, false)
+                    apply()
+                }
+                updateLinkSource()
+            }
+            .setNegativeButton(getString(R.string.label_babe)) { _, _ ->
+                preferences.edit().apply {
+                    putBoolean(Key.SOURCE, false)
+                    putBoolean(Key.BABE, true)
+                    apply()
+                }
+                updateLinkSource()
+            }
+            .setCancelable(false)
+            .show()
     }
 
     fun onShareClick(view: View) {
         if (view.tag == getString(R.string.label_copy)) {
-            shareToClipboard()
+            (getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager)
+                .setPrimaryClip(ClipData.newPlainText(getString(R.string.title_share), getArticle()))
+
+            toastMessage(getString(R.string.copied_into_clipboard))
+            this.finish()
         }
         if (view.tag == getString(R.string.label_more)) {
             shareChooser()
@@ -149,26 +222,29 @@ class ShareActivity : AppCompatActivity() {
         }
     }
 
-    private fun setArticle(url: String, text: String = "") {
+    private fun updateLinkSource() {
         runOnUiThread {
-            findViewById<EditText>(R.id.edit_text).apply {
-                setText((text + "\n\n" + url).trim())
-                //setSelection(text.length)
-                clearFocus()
-            }
+            val link = if (linkSource != null && preferences.getBoolean(Key.SOURCE, true)) linkSource else linkBabe
+            text_link.editText?.setText(link)
+        }
+    }
+
+    private fun setArticleTitle(text: String) {
+        runOnUiThread {
+            text_title.editText?.setText(text.trim())
+            text_title.editText?.clearFocus()
         }
     }
 
     private fun getArticle(): String {
-        return findViewById<EditText>(R.id.edit_text).text.toString().trim()
-    }
+        var article = text_title.editText?.text.toString()
+        if (preferences.getBoolean(Key.SOURCE, true))
+            article += "\n\nLink » $linkSource"
 
-    private fun shareToClipboard() {
-        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val data = ClipData.newPlainText(getString(R.string.title_share), getArticle())
-        clipboard.setPrimaryClip(data)
-        toastMessage(getString(R.string.copied_into_clipboard))
-        this.finish()
+        if (preferences.getBoolean(Key.BABE, false))
+            article += "\n\nBabe » $linkBabe"
+
+        return article.trim()
     }
 
     private fun shareChooser(bundle: Intent? = null) {
@@ -185,7 +261,7 @@ class ShareActivity : AppCompatActivity() {
         runOnUiThread {
             startActivityForResult(
                 Intent.createChooser(intent, getString(R.string.title_share)),
-                sharecode
+                Key.CODE
             )
         }
     }
@@ -200,7 +276,7 @@ class ShareActivity : AppCompatActivity() {
         }
 
         runOnUiThread {
-            startActivityForResult(intent, sharecode)
+            startActivityForResult(intent, Key.CODE)
         }
     }
 
@@ -213,7 +289,7 @@ class ShareActivity : AppCompatActivity() {
         }
 
         runOnUiThread {
-            startActivityForResult(intent, sharecode)
+            startActivityForResult(intent, Key.CODE)
         }
     }
 }
