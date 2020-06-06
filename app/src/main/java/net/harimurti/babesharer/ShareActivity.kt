@@ -168,11 +168,8 @@ class ShareActivity : AppCompatActivity() {
             toastMessage(getString(R.string.copied_into_clipboard))
             this.finish()
         }
-        if (view.tag == getString(R.string.label_more)) {
-            shareChooser()
-        }
         if (view.tag == getString(R.string.label_share)) {
-            shareDefault()
+            shareChooser()
         }
         if (view.tag == getString(R.string.label_telegram)) {
             shareToPackage(telegram)
@@ -263,20 +260,6 @@ class ShareActivity : AppCompatActivity() {
                 Intent.createChooser(intent, getString(R.string.title_share)),
                 Key.CODE
             )
-        }
-    }
-
-    private fun shareDefault() {
-        switchView(ViewMode.NONE)
-
-        val intent = Intent().apply {
-            action = Intent.ACTION_SEND
-            type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, getArticle())
-        }
-
-        runOnUiThread {
-            startActivityForResult(intent, Key.CODE)
         }
     }
 

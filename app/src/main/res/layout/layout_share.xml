@@ -102,7 +102,7 @@
         android:onClick="onShareClick"
         android:tag="@string/label_share"
         app:layout_constraintBottom_toTopOf="@+id/txt_share"
-        app:layout_constraintEnd_toStartOf="@+id/btn_more"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_telegram"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
@@ -121,33 +121,5 @@
         app:layout_constraintEnd_toEndOf="@+id/btn_share"
         app:layout_constraintStart_toStartOf="@+id/btn_share"
         app:layout_constraintTop_toBottomOf="@+id/btn_share" />
-
-    <ImageButton
-        android:id="@+id/btn_more"
-        style="@style/AppButton"
-        android:layout_width="@dimen/icon_size"
-        android:layout_height="@dimen/icon_size"
-        android:onClick="onShareClick"
-        android:tag="@string/label_more"
-        app:layout_constraintBottom_toTopOf="@+id/txt_more"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_share"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:srcCompat="@drawable/ic_more" />
-
-    <TextView
-        android:id="@+id/txt_more"
-        android:layout_width="@dimen/label_icon_width"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:text="@string/label_more"
-        android:textAlignment="center"
-        android:textSize="@dimen/label_icon_size"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/btn_more"
-        app:layout_constraintStart_toStartOf="@+id/btn_more"
-        app:layout_constraintTop_toBottomOf="@+id/btn_more" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,7 +9,6 @@
     <string name="label_whatsapp" translatable="false">WhatsApp</string>
     <string name="label_telegram" translatable="false">Telegram</string>
     <string name="label_share">Share</string>
-    <string name="label_more">More</string>
     <string name="hint_article">Article</string>
     <string name="hint_link">Link Source</string>
     <string name="label_source">Source</string>
