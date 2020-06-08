@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="background_transparent">#80FFFFFF</color>
+    <color name="background_transparent">#40FFFFFF</color>
     <color name="text_color_light">@android:color/primary_text_dark</color>
     <color name="text_color_dark">@android:color/primary_text_light</color>
 </resources>

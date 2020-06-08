@@ -4,7 +4,7 @@
     <color name="color_primary_dark">#004ba0</color>
     <color name="color_accent">#63a4ff</color>
     <color name="navbar_color">@color/cardview_dark_background</color>
-    <color name="background_transparent">#80000000</color>
+    <color name="background_transparent">#BF000000</color>
     <color name="transparent">@android:color/transparent</color>
     <color name="text_color_light">@android:color/primary_text_light</color>
     <color name="text_color_dark">@android:color/primary_text_dark</color>
