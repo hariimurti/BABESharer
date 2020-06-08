@@ -16,7 +16,6 @@ import kotlinx.serialization.UnstableDefault
 import net.harimurti.babesharer.utils.BabeClient
 import net.harimurti.babesharer.utils.PackageFinder
 
-
 class ShareActivity : AppCompatActivity() {
     internal class ViewMode {
         companion object {
@@ -46,23 +45,25 @@ class ShareActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_share)
 
+        // switch view -> loading
+        switchView(ViewMode.LOADING)
+        text_link.editText?.inputType = InputType.TYPE_NULL
+
         // init preferences
         preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE)
 
-        // switch view -> none
-        switchView(ViewMode.NONE)
-        text_link.editText?.inputType = InputType.TYPE_NULL
-
-        // get send intent
-        if (resources.getStringArray(R.array.babeapps).find{ p -> p == callingPackage }.isNullOrEmpty()) {
-            shareChooser(intent)
+        // if not intent send
+        if (!intent.action.equals(Intent.ACTION_SEND)) {
+            this.finish()
             return
         }
 
-        /*if (!(intent.action.equals(Intent.ACTION_SEND) && intent.type.equals("text/plain"))) {
-            this.finish()
+        // filtering intent
+        val sendFrom = resources.getStringArray(R.array.babeapps).find{ p -> p == callingPackage }
+        if (!intent.type.equals("text/plain") || sendFrom.isNullOrEmpty()) {
+            shareChooser(intent)
             return
-        }*/
+        }
 
         // get text from intent
         val text = intent.getStringExtra(Intent.EXTRA_TEXT)
@@ -88,7 +89,6 @@ class ShareActivity : AppCompatActivity() {
         BabeClient(this)
             .setCallback(object : BabeClient.OnCallback {
                 override fun onStart() {
-                    switchView(ViewMode.LOADING)
                     initButtonShare()
                 }
 
@@ -202,6 +202,10 @@ class ShareActivity : AppCompatActivity() {
 
     private fun switchView(view: Int) {
         runOnUiThread {
+            window.setBackgroundDrawableResource(
+                if (view == ViewMode.NONE) R.color.transparent
+                else R.color.background_transparent
+            )
             findViewById<View>(R.id.layout_loading).visibility =
                 if (view == ViewMode.LOADING) View.VISIBLE else View.GONE
             findViewById<View>(R.id.card_share).visibility =
@@ -253,7 +257,10 @@ class ShareActivity : AppCompatActivity() {
             putExtra(Intent.EXTRA_TEXT, getArticle())
         }
 
-        if (bundle != null) intent = bundle
+        if (bundle != null) {
+            intent.type = bundle.type
+            bundle.extras?.let { intent.putExtras(it) }
+        }
 
         runOnUiThread {
             startActivityForResult(
