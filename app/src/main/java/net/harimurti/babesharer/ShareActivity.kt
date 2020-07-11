@@ -225,7 +225,8 @@ class ShareActivity : AppCompatActivity() {
 
     private fun updateLinkSource() {
         runOnUiThread {
-            val link = if (linkSource != null && preferences.getBoolean(Key.SOURCE, true)) linkSource else linkBabe
+            if (linkSource == null) linkSource = linkBabe
+            val link = if (preferences.getBoolean(Key.SOURCE, true)) linkSource else linkBabe
             text_link.editText?.setText(link)
         }
     }
@@ -242,7 +243,7 @@ class ShareActivity : AppCompatActivity() {
         if (preferences.getBoolean(Key.SOURCE, true))
             article += "\n\nLink » $linkSource"
 
-        if (preferences.getBoolean(Key.BABE, false))
+        if (preferences.getBoolean(Key.BABE, false) && linkSource != linkBabe)
             article += "\n\nBabe » $linkBabe"
 
         return article.trim()
