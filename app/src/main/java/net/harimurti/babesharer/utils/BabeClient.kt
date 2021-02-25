@@ -30,22 +30,19 @@ class BabeClient(private val context: Context) {
         return this
     }
 
-    private fun getApiUrl(groupId: String, articleId: String) = "https://i16-tb.sgsnssdk.com/api/1062/article/content/1/$groupId/$articleId/0?" +
-            "youtube=1&manifest_version_code=13120&app_version=13.1.2&iid=6816441765136484097&" +
-            "gaid=b6434742-5905-4e01-aefd-18b2c8f79756&babe_id=&original_channel=gp&channel=gp&" +
-            "app_version_minor=13.1.2.02&device_type=Redmi%203X&language=id&resolution=1280*720&" +
-            "openudid=cb94ee8ca8aca223&update_version_code=1312002&sys_language=en&" +
-            "cdid=dcbfcb44-f88f-4316-8329-b71559b650fd&sys_region=us&os_api=29&tz_name=Asia%2FJakarta&" +
-            "tz_offset=25200&dpi=272&brand=Xiaomi&ac=WIFI&device_id=6775525397713061378&os=android&" +
-            "os_version=10&version_code=13120&hevc_supported=1&babe_logged_in=0&cold_start=0&" +
-            "release_build=v13.1.2.02%20Build%20gp_4ccd318_20200414&device_brand=Xiaomi&" +
-            "device_platform=android&sim_region=id&region=id&aid=1124&ui_language=id"
+    private fun getApiUrl(groupId: String, articleId: String) = "https://i16-tb.sgsnssdk.com/api/1111/article/content/1/$groupId/$articleId/0?" +
+            "youtube=1&manifest_version_code=13610&app_version=13.6.1&iid=6901292288317392641&gaid=030281ff-a361-4fe4-afbd-59baae0f8f34&babe_id&" +
+            "original_channel=gp&channel=gp&app_version_minor=13.6.1.04&device_type=Pixel&language=id&resolution=1280*720&" +
+            "openudid=23d24cbe03814174&update_version_code=1361004&sys_language=en&cdid=6bc53f9c-fdb4-40bc-b3ec-e119930597a7&" +
+            "sys_region=us&os_api=29&tz_name=Asia%2FJakarta&tz_offset=25200&dpi=272&brand=Google&ac=WIFI&device_id=6879420167638599174&" +
+            "os=android&os_version=10&version_code=13610&hevc_supported=1&babe_logged_in=0&cold_start=0&" +
+            "release_build=v13.6.1.04+Build+gp_01c5d96_20201127&sim_oper=51089&device_brand=Google&device_platform=android&" +
+            "sim_region=id&region=id&aid=1124&ui_language=id"
 
-    private fun getCookies() = "store-idc=alisg; " +
-            "odin_tt=3ea15986627310f0aa6cd837e20adb4c37a898295cb55ceae973bb746047c5767e0438a2d4caeb6ec680e2aebf78c77ca6dad00e5934467ac1b2e3443d8c86ea; " +
-            "store-country-code=id; install_id=6816441765136484097; " +
-            "ttreq=1\$25fa2921db20dcf6ad36cda3586de6ad47ffc9d3; " +
-            "passport_csrf_token=b7074271dea7adc9dc61f70d3b4f2fca"
+    private fun getCookies() = "passport_csrf_token=7c0a34d24008c0027060968b067cecb3; " +
+            "passport_csrf_token_default=7c0a34d24008c0027060968b067cecb3; " +
+            "odin_tt=62c74e15d2c7fc0f64e5bd5738e30995be55cbd6d8660ee08f0a0f8aafd6a67e0b38be15f67f269f1ffd9c7c313db263f269fc0b95c96cc3349b5775c69bf08a; " +
+            "install_id=6901292288317392641; ttreq=1\$d2910d39bbcbb52320c6c0a661967242ecc44ee2"
 
     @UnstableDefault
     fun getArticle(url: String) {
