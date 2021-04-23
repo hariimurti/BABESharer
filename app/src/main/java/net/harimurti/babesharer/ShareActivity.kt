@@ -71,8 +71,8 @@ class ShareActivity : AppCompatActivity() {
             this.finish()
             return
         }
-        // find (title)(http://share.babe.news/…)
-        val match = Regex("([\\s\\S]+?)(https?://share\\.babe\\.news/.+)")
+        // find link http://share.babe.news/…
+        val match = Regex("(https?://share\\.babe\\.news/\\S+)\\?")
             .findAll(text.toString())
             .firstOrNull()
         if (match == null) {
@@ -81,9 +81,9 @@ class ShareActivity : AppCompatActivity() {
         }
 
         // update article text
-        linkBabe = match.groups[2]?.value.toString()
+        linkBabe = match.groups[1]?.value.toString()
         updateLinkSource()
-        setArticleTitle(match.groups[1]?.value.toString())
+        setArticleTitle(resources.getString(R.string.article_tempate))
 
         // process the link
         BabeClient(this)

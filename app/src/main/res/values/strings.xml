@@ -15,4 +15,5 @@
     <string name="label_babe" translatable="false">Babe</string>
     <string name="label_babe_and_source">Both</string>
     <string name="alert_message_settings">Choose the link to share : Babe, source, or both?</string>
+    <string name="article_tempate">News from Babe</string>
 </resources>

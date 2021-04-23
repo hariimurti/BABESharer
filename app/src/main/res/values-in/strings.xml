@@ -12,4 +12,5 @@
     <string name="label_source">Sumber Asli</string>
     <string name="label_babe_and_source">Keduanya</string>
     <string name="alert_message_settings">Pilih tautan yang akan dibagikan : Babe, sumber asli, atau keduanya?</string>
+    <string name="article_tempate">Berita dari Babe</string>
 </resources>
