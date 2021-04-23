@@ -30,6 +30,11 @@ class BabeClient(private val context: Context) {
         return this
     }
 
+    private fun getUserAgentApple() = "Mozilla/5.0 (Apple-iPhone7C2/1202.466; U; CPU like Mac OS X; en) " +
+            "AppleWebKit/420+ (KHTML, like Gecko) Version/3.0 Mobile/1A543 Safari/419.3"
+
+    private fun getUserAgentBabe() = "Dalvik/2.1.0 (Linux; U; Android 10; Redmi 3S Build/QQ3A.200905.001) NewsArticle/16.0.1"
+
     private fun getApiUrl(groupId: String, articleId: String) = "https://i16-tb.sgsnssdk.com/api/1201/article/content/1/$groupId/$articleId/0?" +
             "from_category=0&manifest_version_code=16010&current_region=ID&app_version=16.0.1&device_memory=2g&" +
             "iid=6953970413853542145&gaid=9f1d837b-fe93-4b20-b901-b0ec132ead96&original_channel=gp&channel=gp&" +
@@ -53,7 +58,7 @@ class BabeClient(private val context: Context) {
     fun getArticle(url: String) {
         val request = Request.Builder()
             .url(url)
-            .header("User-Agent", UserAgent.apple())
+            .header("User-Agent", getUserAgentApple())
             .build()
 
         listener?.onStart()
@@ -113,7 +118,7 @@ class BabeClient(private val context: Context) {
     private fun getSourceArticle(url: String) {
         val request = Request.Builder()
             .url(url)
-            .header("User-Agent", UserAgent.babe())
+            .header("User-Agent", getUserAgentBabe())
             .addHeader("Cookie", getCookies())
             .addHeader("Accept", "application/json")
             .build()
