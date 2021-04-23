@@ -30,19 +30,24 @@ class BabeClient(private val context: Context) {
         return this
     }
 
-    private fun getApiUrl(groupId: String, articleId: String) = "https://i16-tb.sgsnssdk.com/api/1111/article/content/1/$groupId/$articleId/0?" +
-            "youtube=1&manifest_version_code=13610&app_version=13.6.1&iid=6901292288317392641&gaid=030281ff-a361-4fe4-afbd-59baae0f8f34&babe_id&" +
-            "original_channel=gp&channel=gp&app_version_minor=13.6.1.04&device_type=Pixel&language=id&resolution=1280*720&" +
-            "openudid=23d24cbe03814174&update_version_code=1361004&sys_language=en&cdid=6bc53f9c-fdb4-40bc-b3ec-e119930597a7&" +
-            "sys_region=us&os_api=29&tz_name=Asia%2FJakarta&tz_offset=25200&dpi=272&brand=Google&ac=WIFI&device_id=6879420167638599174&" +
-            "os=android&os_version=10&version_code=13610&hevc_supported=1&babe_logged_in=0&cold_start=0&" +
-            "release_build=v13.6.1.04+Build+gp_01c5d96_20201127&sim_oper=51089&device_brand=Google&device_platform=android&" +
-            "sim_region=id&region=id&aid=1124&ui_language=id"
+    private fun getApiUrl(groupId: String, articleId: String) = "https://i16-tb.sgsnssdk.com/api/1201/article/content/1/$groupId/$articleId/0?" +
+            "from_category=0&manifest_version_code=16010&current_region=ID&app_version=16.0.1&device_memory=2g&" +
+            "iid=6953970413853542145&gaid=9f1d837b-fe93-4b20-b901-b0ec132ead96&original_channel=gp&channel=gp&" +
+            "app_version_minor=16.0.1.02&device_type=Redmi+3S&language=id&resolution=1280*720&openudid=e89b0f2028693183&" +
+            "enter_client_ab_vids=1664830&update_version_code=1601002&sys_language=in&login_platform=google&" +
+            "cdid=6bc53f9c-fdb4-40bc-b3ec-e119930597a7&sys_region=US&os_api=29&tz_name=Asia%2FJakarta&tz_offset=25200&" +
+            "tt_language=id&dpi=272&brand=Xiaomi&bind_platforms=google&carrier_region=ID&ac=WIFI&device_id=6879420167638599174&" +
+            "os=android&mcc_mnc=51089&os_version=10&version_code=16010&hevc_supported=1&carrier_region_v2=510&cold_start=0&" +
+            "release_build=v16.0.1.02+Build+gp_70c13f6_20210422&sim_oper=51089&device_brand=Xiaomi&device_platform=android&" +
+            "sim_region=ID&region=id&aid=1124&is_helo_babe=true&ui_language=id"
 
-    private fun getCookies() = "passport_csrf_token=7c0a34d24008c0027060968b067cecb3; " +
-            "passport_csrf_token_default=7c0a34d24008c0027060968b067cecb3; " +
-            "odin_tt=62c74e15d2c7fc0f64e5bd5738e30995be55cbd6d8660ee08f0a0f8aafd6a67e0b38be15f67f269f1ffd9c7c313db263f269fc0b95c96cc3349b5775c69bf08a; " +
-            "install_id=6901292288317392641; ttreq=1\$d2910d39bbcbb52320c6c0a661967242ecc44ee2"
+    private fun getCookies() = "passport_csrf_token=915e2c98787592c4d6c35b50ef3b1f70; passport_csrf_token_default=915e2c98787592c4d6c35b50ef3b1f70; " +
+            "store-idc=alisg; store-country-code=jp; install_id=6953970413853542145; ttreq=1\$8aecb1b55eb4d6e64cc819669d60ea4c623cd8e2; " +
+            "multi_sids=6693595566808630273%3Ac62fcd27908a5c53a335ae8182b7f0ea; " +
+            "odin_tt=37c90a65fc4af3945b2690e65cc4d9fb0b5c11ecc91c9462880bfdd58540c8467364386f21c2ccfaa69c1d9e83787c27ddb6b51b8fcebc85c8e0ce426a45637b; " +
+            "d_ticket=c84d2e060f116cd3655315cd6a44e42942047; sid_guard=c62fcd27908a5c53a335ae8182b7f0ea%7C1619156363%7C5184000%7CTue%2C+22-Jun-2021+05%3A39%3A23+GMT; " +
+            "uid_tt=e5f81f7e194cf7c2e44bd93c073d38e49b558e64ee2d93a26fe73f992e9d3fe9; uid_tt_ss=e5f81f7e194cf7c2e44bd93c073d38e49b558e64ee2d93a26fe73f992e9d3fe9; " +
+            "sid_tt=c62fcd27908a5c53a335ae8182b7f0ea; sessionid=c62fcd27908a5c53a335ae8182b7f0ea; sessionid_ss=c62fcd27908a5c53a335ae8182b7f0ea"
 
     @UnstableDefault
     fun getArticle(url: String) {
