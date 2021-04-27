@@ -110,7 +110,11 @@ class ShareActivity : AppCompatActivity() {
                 }
 
                 override fun onError(msg: String) {
-                    toastMessage(msg, Gravity.CENTER)
+                    Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT).apply {
+                        setGravity(Gravity.CENTER, 0, 0)
+                    }.show()
+
+                    if (BuildConfig.DEBUG) Log.e("Toast", msg)
                 }
 
                 override fun onFoundTitle(text: String) {
@@ -154,7 +158,12 @@ class ShareActivity : AppCompatActivity() {
             (getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager)
                 .setPrimaryClip(ClipData.newPlainText(getString(R.string.title_share), getArticleToShare()))
 
-            toastMessage(getString(R.string.copied_into_clipboard))
+            val msg = getString(R.string.copied_into_clipboard)
+            Toast.makeText(this, msg, Toast.LENGTH_SHORT).apply {
+                setGravity(Gravity.BOTTOM, 0, 0)
+            }.show()
+
+            if (BuildConfig.DEBUG) Log.e("Toast", msg)
             this.finish()
         }
         if (view.tag == getString(R.string.label_share)) {
@@ -200,16 +209,6 @@ class ShareActivity : AppCompatActivity() {
                 if (view == ViewMode.LOADING) View.VISIBLE else View.GONE
             findViewById<View>(R.id.card_share).visibility =
                 if (view == ViewMode.SHARE) View.VISIBLE else View.GONE
-        }
-    }
-
-    private fun toastMessage(message: String, gravity: Int = Gravity.BOTTOM) {
-        runOnUiThread {
-            val toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
-            toast.setGravity(gravity, 0, 0)
-            toast.show()
-
-            if (BuildConfig.DEBUG) Log.e("Toast", message)
         }
     }
 
