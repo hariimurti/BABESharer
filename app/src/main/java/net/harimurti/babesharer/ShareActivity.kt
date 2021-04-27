@@ -40,14 +40,13 @@ class ShareActivity : AppCompatActivity() {
 
     private lateinit var preferences: SharedPreferences
 
-    @UnstableDefault
+    @OptIn(UnstableDefault::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_share)
 
         // switch view -> loading
         switchView(ViewMode.LOADING)
-        text_link.editText?.inputType = InputType.TYPE_NULL
 
         // init preferences
         preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE)
@@ -86,9 +85,31 @@ class ShareActivity : AppCompatActivity() {
         setArticleTitle(resources.getString(R.string.article_tempate))
 
         // process the link
+        onRefreshClick(View(this))
+    }
+
+    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        return if (keyCode == KeyEvent.KEYCODE_MENU) {
+            onSettingClick(View(this))
+            true
+        } else super.onKeyUp(keyCode, event)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Key.CODE) this.finish()
+    }
+
+    fun onRootLayoutClick(view: View) {
+        //this.finish()
+    }
+
+    @OptIn(UnstableDefault::class)
+    fun onRefreshClick(view: View) {
         BabeClient(this)
             .setCallback(object : BabeClient.OnCallback {
                 override fun onStart() {
+                    switchView(ViewMode.LOADING)
                     initButtonShare()
                 }
 
@@ -110,22 +131,6 @@ class ShareActivity : AppCompatActivity() {
                 }
             })
             .getArticle(linkBabe!!)
-    }
-
-    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
-        return if (keyCode == KeyEvent.KEYCODE_MENU) {
-            onSettingClick(View(this))
-            true
-        } else super.onKeyUp(keyCode, event)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == Key.CODE) this.finish()
-    }
-
-    fun onRootLayoutClick(view: View) {
-        //this.finish()
     }
 
     fun onSettingClick(view: View) {
@@ -194,6 +199,7 @@ class ShareActivity : AppCompatActivity() {
                 if (view == ViewMode.NONE) R.color.transparent
                 else R.color.background_transparent
             )
+            text_link.editText?.inputType = InputType.TYPE_NULL
             findViewById<View>(R.id.layout_loading).visibility =
                 if (view == ViewMode.LOADING) View.VISIBLE else View.GONE
             findViewById<View>(R.id.card_share).visibility =

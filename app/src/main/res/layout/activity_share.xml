@@ -108,6 +108,15 @@
                 android:layout_width="@dimen/icon_settings"
                 android:layout_height="@dimen/icon_settings"
                 app:layout_constraintBottom_toBottomOf="@id/label_share"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/label_share"
+                app:srcCompat="@drawable/ic_refresh"
+                android:onClick="onRefreshClick" />
+
+            <ImageButton
+                android:layout_width="@dimen/icon_settings"
+                android:layout_height="@dimen/icon_settings"
+                app:layout_constraintBottom_toBottomOf="@id/label_share"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/label_share"
                 app:srcCompat="@drawable/ic_settings"
