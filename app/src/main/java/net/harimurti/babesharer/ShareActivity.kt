@@ -132,29 +132,17 @@ class ShareActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
             .setTitle(R.string.app_name)
             .setMessage(R.string.alert_message_settings)
-            .setNeutralButton(getString(R.string.label_babe_and_source)) { _, _ ->
+            .setPositiveButton(getString(R.string.label_yes)) { _, _ ->
                 preferences.edit().apply {
-                    putBoolean(Key.SOURCE, true)
                     putBoolean(Key.BABE, true)
                     apply()
                 }
-                updateLinkSource()
             }
-            .setPositiveButton(getString(R.string.label_source)) { _, _ ->
+            .setNegativeButton(getString(R.string.label_no)) { _, _ ->
                 preferences.edit().apply {
-                    putBoolean(Key.SOURCE, true)
                     putBoolean(Key.BABE, false)
                     apply()
                 }
-                updateLinkSource()
-            }
-            .setNegativeButton(getString(R.string.label_babe)) { _, _ ->
-                preferences.edit().apply {
-                    putBoolean(Key.SOURCE, false)
-                    putBoolean(Key.BABE, true)
-                    apply()
-                }
-                updateLinkSource()
             }
             .setCancelable(false)
             .show()
@@ -163,7 +151,7 @@ class ShareActivity : AppCompatActivity() {
     fun onShareClick(view: View) {
         if (view.tag == getString(R.string.label_copy)) {
             (getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager)
-                .setPrimaryClip(ClipData.newPlainText(getString(R.string.title_share), getArticle()))
+                .setPrimaryClip(ClipData.newPlainText(getString(R.string.title_share), getArticleToShare()))
 
             toastMessage(getString(R.string.copied_into_clipboard))
             this.finish()
@@ -225,9 +213,10 @@ class ShareActivity : AppCompatActivity() {
 
     private fun updateLinkSource() {
         runOnUiThread {
-            var link = if (preferences.getBoolean(Key.SOURCE, true)) linkSource else linkBabe
-            if (link.isNullOrEmpty()) link = linkBabe
-            text_link.editText?.setText(link)
+            if (linkSource?.isBlank() == true)
+                linkSource = linkBabe
+
+            text_link.editText?.setText(linkSource)
         }
     }
 
@@ -238,18 +227,16 @@ class ShareActivity : AppCompatActivity() {
         }
     }
 
-    private fun getArticle(): String {
+    private fun getArticleToShare(): String {
         var article = text_title.editText?.text.toString()
-        var isBabe = true
+        val textlink = getString(R.string.label_link)
 
-        if (!linkSource.isNullOrEmpty()) {
-            if (preferences.getBoolean(Key.SOURCE, true) && !linkSource.equals(linkBabe)) {
-                article += "\n\nLink » $linkSource"
-                isBabe = preferences.getBoolean(Key.BABE, false)
-            }
+        article += if (preferences.getBoolean(Key.BABE, true) && !linkSource.equals(linkBabe)) {
+            "\n\n[$textlink] $linkSource\n\n[BaBe] $linkBabe"
+        } else {
+            "\n\n" + linkSource
         }
 
-        if (isBabe) article += "\n\nBabe » $linkBabe"
         return article.trim()
     }
 
@@ -259,7 +246,7 @@ class ShareActivity : AppCompatActivity() {
         var intent = Intent().apply {
             action = Intent.ACTION_SEND
             type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, getArticle())
+            putExtra(Intent.EXTRA_TEXT, getArticleToShare())
         }
 
         if (bundle != null) {
@@ -279,7 +266,7 @@ class ShareActivity : AppCompatActivity() {
         val intent = Intent().apply {
             action = Intent.ACTION_SEND
             type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, getArticle())
+            putExtra(Intent.EXTRA_TEXT, getArticleToShare())
             setPackage(packageName)
         }
 

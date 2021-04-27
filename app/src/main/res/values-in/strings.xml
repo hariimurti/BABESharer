@@ -9,8 +9,9 @@
     <string name="label_share">Bagikan</string>
     <string name="hint_article">Artikel</string>
     <string name="hint_link">Sumber Tautan</string>
-    <string name="label_source">Sumber Asli</string>
-    <string name="label_babe_and_source">Keduanya</string>
-    <string name="alert_message_settings">Pilih tautan yang akan dibagikan : Babe, sumber asli, atau keduanya?</string>
-    <string name="article_tempate">Berita dari Babe</string>
+    <string name="label_link">Tautan</string>
+    <string name="label_yes">Ya</string>
+    <string name="label_no">Tidak</string>
+    <string name="alert_message_settings">Tambahkan tautan dari BaBe?</string>
+    <string name="article_tempate">Berita dari BaBe</string>
 </resources>

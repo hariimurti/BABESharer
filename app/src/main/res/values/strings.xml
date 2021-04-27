@@ -11,9 +11,9 @@
     <string name="label_share">Share</string>
     <string name="hint_article">Article</string>
     <string name="hint_link">Link Source</string>
-    <string name="label_source">Source</string>
-    <string name="label_babe" translatable="false">Babe</string>
-    <string name="label_babe_and_source">Both</string>
-    <string name="alert_message_settings">Choose the link to share : Babe, source, or both?</string>
-    <string name="article_tempate">News from Babe</string>
+    <string name="label_link">Link</string>
+    <string name="label_yes">Yes</string>
+    <string name="label_no">No</string>
+    <string name="alert_message_settings">Add a link from BaBe?</string>
+    <string name="article_tempate">News from BaBe</string>
 </resources>
