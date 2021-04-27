@@ -45,9 +45,6 @@ class ShareActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_share)
 
-        // switch view -> loading
-        switchView(ViewMode.LOADING)
-
         // init preferences
         preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE)
 
