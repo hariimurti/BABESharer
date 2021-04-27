@@ -28,7 +28,6 @@ class ShareActivity : AppCompatActivity() {
     internal class Key {
         companion object {
             const val CODE = 2020
-            const val SOURCE = "share_source"
             const val BABE = "share_babe"
         }
     }
